@@ -50,7 +50,7 @@ class _StockPageState extends State<StockPage> {
                 Text(
                   stock.symbol,
                   style: const TextStyle(
-                    fontSize: 24,
+                    fontSize: 26,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -78,23 +78,33 @@ class _StockPageState extends State<StockPage> {
                   style: const TextStyle(fontSize: 20),
                 ),
                 const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        bloc.inputSink.add(StockAction.buy);
-                      },
-                      child: const Text('Buy'),
-                    ),
-                    const SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        bloc.inputSink.add(StockAction.sell);
-                      },
-                      child: const Text('Sell'),
-                    ),
-                  ],
+                ElevatedButton(
+                  onPressed: () {
+                    bloc.inputSink.add(StockAction.bullMarket);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Bull Market (Increase)'),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    bloc.inputSink.add(StockAction.bearMarket);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Bear Market (Decrease)'),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    bloc.inputSink.add(StockAction.reset);
+                  },
+                  child: const Text('Reset'),
                 ),
               ],
             ),

@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 enum StockAction {
-  buy,
-  sell,
+  bullMarket,
+  bearMarket,
+  reset,
 }
 
 class Stock {
@@ -41,37 +42,31 @@ class StockBloc {
 
   final Random _random = Random();
 
-  Stock _currentStock = Stock(
+  final Stock _initialStock = Stock(
     symbol: 'AAPL',
     price: 150.0,
     dailyChange: 0.0,
     quantity: 0,
   );
 
+  late Stock _currentStock;
+
   late final StreamSubscription<StockAction> _subscription;
 
-  Stream<Stock> get stockStream => _stockController.stream;
-
-  Sink<StockAction> get inputSink => _actionController.sink;
-
-  Stock get currentStock => _currentStock;
-
   StockBloc() {
+    _currentStock = _initialStock;
+
     _subscription = _actionController.stream.listen((action) {
-      final fluctuation = _random.nextDouble() * 2.0;
-
       double newPrice = _currentStock.price;
-      int newQuantity = _currentStock.quantity;
 
-      if (action == StockAction.buy) {
-        newPrice += fluctuation;
-        newQuantity++;
-      } else {
-        newPrice -= fluctuation;
-
-        if (newQuantity > 0) {
-          newQuantity--;
-        }
+      if (action == StockAction.bullMarket) {
+        newPrice += _random.nextDouble() * 2.0;
+      } else if (action == StockAction.bearMarket) {
+        newPrice -= _random.nextDouble() * 2.0;
+      } else if (action == StockAction.reset) {
+        _currentStock = _initialStock;
+        _stockController.add(_currentStock);
+        return;
       }
 
       final dailyChange = newPrice - _currentStock.price;
@@ -79,12 +74,17 @@ class StockBloc {
       _currentStock = _currentStock.copyWith(
         price: newPrice,
         dailyChange: dailyChange,
-        quantity: newQuantity,
       );
 
       _stockController.add(_currentStock);
     });
   }
+
+  Stream<Stock> get stockStream => _stockController.stream;
+
+  Sink<StockAction> get inputSink => _actionController.sink;
+
+  Stock get currentStock => _currentStock;
 
   Future<void> dispose() async {
     await _subscription.cancel();

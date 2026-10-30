@@ -11,5 +11,12 @@ Journal2
 The SteamBuilder know when to rebuild the UI by listening
 to StockBloc and receives new data. SteamBuilder is 
 reactive because it listens for stream updates and 
-automatically rebuilds.while the impertaive is manually
+automatically rebuilds.while the imperative is manually
 triggered and the setState() rebuilds when called.
+
+Journal3
+
+You press the button. Bloc receives action, copyWith() updates
+the stock,Bloc sends the update,Streambuilder receives the new
+stock, the screen rebuilds. The rebuild happens at 
+builder:(context,snapshot)
