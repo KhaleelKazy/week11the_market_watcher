@@ -20,3 +20,9 @@ You press the button. Bloc receives action, copyWith() updates
 the stock,Bloc sends the update,Streambuilder receives the new
 stock, the screen rebuilds. The rebuild happens at 
 builder:(context,snapshot)
+
+Journal4
+
+The bLoC seperates what the app does from how the app looks by one handling 
+the calcualtion and the other handling the display. No you would only need to
+change the ui. You can change how to app looks without changing how it works
